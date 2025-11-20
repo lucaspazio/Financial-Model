@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpArks Financial Model</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body class="bg-dark text-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black px-3 shadow">
+        <span class="navbar-brand fw-bold neon-text">SpArks Financial Dashboard</span>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+
+            <!-- LEFT COLUMN: INPUT PANEL -->
+            <div class="col-md-3">
+                <div class="card bg-space shadow-lg p-3 mb-4">
+
+                    <h5 class="card-title text-center neon-text">Model Inputs</h5>
+
+                    <!-- SLIDER: MAU SCALE -->
+                    <label class="slider-label">MAU Growth Scale</label>
+                    <input type="range" id="mau_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Game Conversion Scale</label>
+                    <input type="range" id="conv_game_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Course Conversion Scale</label>
+                    <input type="range" id="conv_course_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Marketing Scale</label>
+                    <input type="range" id="marketing_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Event Yield Scale</label>
+                    <input type="range" id="event_yield_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Content Cost Scale</label>
+                    <input type="range" id="content_cost_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <hr class="neon-hr">
+
+                    <!-- NEW SLIDERS -->
+                    <label class="slider-label">Staff Scale</label>
+                    <input type="range" id="staff_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+
+                    <label class="slider-label">Services & HW Scale</label>
+                    <input type="range" id="srv_hw_scale" min="0.5" max="3.0" step="0.1" value="1.0" class="form-range">
+
+                    <button class="btn btn-neon w-100 mt-3" onclick="runModel()">Run Model</button>
+
+                    <hr class="neon-hr">
+
+                    <div class="input-group mb-3">
+                        <input id="scenario_name" class="form-control" placeholder="Scenario name">
+                        <button class="btn btn-outline-light" onclick="saveScenario()">Save</button>
+                    </div>
+
+                    <select id="scenario_list" class="form-select mb-2"></select>
+                    <button class="btn btn-outline-info w-100" onclick="loadScenario()">Load Scenario</button>
+
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: TABS + CHARTS -->
+            <div class="col-md-9">
+
+                <ul class="nav nav-tabs mb-3" id="mainTabs">
+                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab_dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_economics">Economics</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_mau">MAU Funnel</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_cac">CAC & ROAS</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_staff">Staff</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <!-- DASHBOARD -->
+                    <div class="tab-pane fade show active" id="tab_dashboard">
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">Revenues vs Costs</h5>
+                            <div id="chart_revcost"></div>
+                        </div>
+
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">Profit</h5>
+                            <div id="chart_profit"></div>
+                        </div>
+                    </div>
+
+                    <!-- ECONOMICS -->
+                    <div class="tab-pane fade" id="tab_economics">
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">Revenue Breakdown</h5>
+                            <div id="chart_segments"></div>
+                        </div>
+                    </div>
+
+                    <!-- MAU FUNNEL -->
+                    <div class="tab-pane fade" id="tab_mau">
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">MAU</h5>
+                            <div id="chart_mau"></div>
+                        </div>
+                    </div>
+
+                    <!-- CAC & ROAS -->
+                    <div class="tab-pane fade" id="tab_cac">
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">CAC</h5>
+                            <div id="chart_cac"></div>
+                        </div>
+
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">ROAS</h5>
+                            <div id="chart_roas"></div>
+                        </div>
+                    </div>
+
+                    <!-- STAFF -->
+                    <div class="tab-pane fade" id="tab_staff">
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">Staff Count</h5>
+                            <div id="chart_staff"></div>
+                        </div>
+
+                        <div class="card bg-space p-3 mb-3">
+                            <h5 class="neon-text">Salaries</h5>
+                            <div id="chart_salaries"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
