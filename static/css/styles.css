@@ -1,5 +1,4 @@
-/* styles.css - SpArks Space Theme */
-
+/* Space background & general */
 body.bg-dark {
     background: radial-gradient(circle at 20% 20%, #050816, #02030a 60%, #000000 100%);
     color: #e5e7eb;
@@ -57,42 +56,54 @@ body.bg-dark {
     background-color: transparent;
 }
 
-/* Slider labels – HIGH CONTRAST */
+.subtab-nav .nav-link {
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+}
+
+.subtab-nav .nav-link.active {
+    background-color: #0f172a;
+    color: #e5e7eb;
+}
+
+/* Sliders */
 .slider-label {
     display: block;
     margin-top: 0.75rem;
     margin-bottom: 0.15rem;
     font-size: 0.9rem;
     font-weight: 600;
-    color: #f9fafb; /* bright white for readability */
+    color: #f9fafb;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
 }
 
-/* Range sliders styling */
+.slider-value {
+    font-weight: 700;
+    color: #38bdf8;
+}
+
 .form-range {
     accent-color: #38bdf8;
 }
 
-.form-range::-webkit-slider-thumb {
-    background-color: #38bdf8;
-    border: 2px solid #f9fafb;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
-}
-
-.form-range::-moz-range-thumb {
-    background-color: #38bdf8;
-    border: 2px solid #f9fafb;
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
-}
-
-/* Cards / chart containers */
-.card.bg-space {
-    margin-bottom: 1rem;
-}
-
-#chart_revcost, #chart_profit,
-#chart_segments, #chart_mau,
-#chart_cac, #chart_roas,
-#chart_staff, #chart_salaries {
-    height: 320px;
+/* Chart heights */
+#chart_revcost,
+#chart_profit,
+#chart_segments,
+#chart_costs_seg,
+#chart_mau,
+#chart_cac,
+#chart_roas,
+#chart_staff,
+#chart_salaries,
+#chart_space_profit,
+#chart_in_mau,
+#chart_in_game,
+#chart_in_course,
+#chart_in_marketing,
+#chart_in_events,
+#chart_in_content,
+#chart_in_staff,
+#chart_in_srv {
+    min-height: 300px;
 }

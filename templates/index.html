@@ -6,148 +6,268 @@
     <title>SpArks Financial Model</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="staticheet">
 
-    <!-- Plotly -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Plotly (version esplicita, moderna) -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="staticheet" href="/static/css/static.css">
 </head>
 
 <body class="bg-dark text-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black px-3 shadow">
-        <span class="navbar-brand fw-bold neon-text">SpArks Financial Dashboard</span>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-black px-3 shadow">
+    <span class="navbar-brand fw-bold neon-text">SpArks Financial Dashboard</span>
+</nav>
 
-    <div class="container-fluid mt-4">
-        <div class="row">
+<div class="container-fluid mt-4">
+    <div class="row">
 
-            <!-- LEFT COLUMN: INPUT PANEL -->
-            <div class="col-md-3">
-                <div class="card bg-space shadow-lg p-3 mb-4">
+        <!-- LEFT SIDEBAR: SLIDERS -->
+        <div class="col-md-3">
+            <div class="card bg-space shadow-lg p-3 mb-4">
+                <h5 class="card-title text-center neon-text">Model Inputs</h5>
 
-                    <h5 class="card-title text-center neon-text">Model Inputs</h5>
+                <!-- SLIDERS CON VALORE VISIBILE -->
+                <label class="slider-label">
+                    MAU Growth Scale:
+                    <span id="mau_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="mau_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <!-- SLIDER: MAU SCALE -->
-                    <label class="slider-label">MAU Growth Scale</label>
-                    <input type="range" id="mau_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Game Conversion Scale:
+                    <span id="conv_game_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="conv_game_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Game Conversion Scale</label>
-                    <input type="range" id="conv_game_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Course Conversion Scale:
+                    <span id="conv_course_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="conv_course_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Course Conversion Scale</label>
-                    <input type="range" id="conv_course_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Marketing Scale:
+                    <span id="marketing_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="marketing_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Marketing Scale</label>
-                    <input type="range" id="marketing_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Event Yield Scale:
+                    <span id="event_yield_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="event_yield_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Event Yield Scale</label>
-                    <input type="range" id="event_yield_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Content Cost Scale:
+                    <span id="content_cost_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="content_cost_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Content Cost Scale</label>
-                    <input type="range" id="content_cost_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <hr class="neon-hr">
 
-                    <hr class="neon-hr">
+                <label class="slider-label">
+                    Staff Scale:
+                    <span id="staff_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="staff_scale" min="0.5" max="2.0" step="0.05" value="1.0" class="form-range">
 
-                    <!-- NEW SLIDERS -->
-                    <label class="slider-label">Staff Scale</label>
-                    <input type="range" id="staff_scale" min="0.5" max="2.0" step="0.1" value="1.0" class="form-range">
+                <label class="slider-label">
+                    Services &amp; HW Scale:
+                    <span id="srv_hw_scale_value" class="slider-value">1.0×</span>
+                </label>
+                <input type="range" id="srv_hw_scale" min="0.5" max="3.0" step="0.05" value="1.0" class="form-range">
 
-                    <label class="slider-label">Services & HW Scale</label>
-                    <input type="range" id="srv_hw_scale" min="0.5" max="3.0" step="0.1" value="1.0" class="form-range">
+                <button class="btn btn-neon w-100 mt-3" onclick="runModel()">Run Model</button>
 
-                    <button class="btn btn-neon w-100 mt-3" onclick="runModel()">Run Model</button>
+                <hr class="neon-hr">
 
-                    <hr class="neon-hr">
-
-                    <div class="input-group mb-3">
-                        <input id="scenario_name" class="form-control" placeholder="Scenario name">
-                        <button class="btn btn-outline-light" onclick="saveScenario()">Save</button>
-                    </div>
-
-                    <select id="scenario_list" class="form-select mb-2"></select>
-                    <button class="btn btn-outline-info w-100" onclick="loadScenario()">Load Scenario</button>
-
+                <div class="input-group mb-3">
+                    <input id="scenario_name" class="form-control" placeholder="Scenario name">
+                    <button class="btn btn-outline-light" onclick="saveScenario()">Save</button>
                 </div>
-            </div>
 
-            <!-- RIGHT COLUMN: TABS + CHARTS -->
-            <div class="col-md-9">
-
-                <ul class="nav nav-tabs mb-3" id="mainTabs">
-                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab_dashboard">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_economics">Economics</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_mau">MAU Funnel</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_cac">CAC & ROAS</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_staff">Staff</a></li>
-                </ul>
-
-                <div class="tab-content">
-
-                    <!-- DASHBOARD -->
-                    <div class="tab-pane fade show active" id="tab_dashboard">
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">Revenues vs Costs</h5>
-                            <div id="chart_revcost"></div>
-                        </div>
-
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">Profit</h5>
-                            <div id="chart_profit"></div>
-                        </div>
-                    </div>
-
-                    <!-- ECONOMICS -->
-                    <div class="tab-pane fade" id="tab_economics">
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">Revenue Breakdown</h5>
-                            <div id="chart_segments"></div>
-                        </div>
-                    </div>
-
-                    <!-- MAU FUNNEL -->
-                    <div class="tab-pane fade" id="tab_mau">
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">MAU</h5>
-                            <div id="chart_mau"></div>
-                        </div>
-                    </div>
-
-                    <!-- CAC & ROAS -->
-                    <div class="tab-pane fade" id="tab_cac">
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">CAC</h5>
-                            <div id="chart_cac"></div>
-                        </div>
-
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">ROAS</h5>
-                            <div id="chart_roas"></div>
-                        </div>
-                    </div>
-
-                    <!-- STAFF -->
-                    <div class="tab-pane fade" id="tab_staff">
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">Staff Count</h5>
-                            <div id="chart_staff"></div>
-                        </div>
-
-                        <div class="card bg-space p-3 mb-3">
-                            <h5 class="neon-text">Salaries</h5>
-                            <div id="chart_salaries"></div>
-                        </div>
-                    </div>
-
-                </div>
+                <select id="scenario_list" class="form-select mb-2"></select>
+                <button class="btn btn-outline-info w-100" onclick="loadScenario()">Load Scenario</button>
             </div>
         </div>
-    </div>
 
-    <!-- JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/static/js/app.js"></script>
+        <!-- RIGHT: TABS -->
+        <div class="col-md-9">
+
+            <!-- MAIN TABS -->
+            <ul class="nav nav-tabs mb-3" id="mainTabs">
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab_inputs">Inputs</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab_results">Results</a></li>
+            </ul>
+
+            <div class="tab-content">
+
+                <!-- ================== INPUTS TAB ================== -->
+                <div class="tab-pane fade show active" id="tab_inputs">
+
+                    <ul class="nav nav-pills mb-3 subtab-nav">
+                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#in_mau">MAU</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_game">Game Conv</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_course">Course Conv</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_marketing">Marketing</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_events">Event Yield</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_content">Content Cost</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_staff">Staff Scale</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#in_srv">Srv &amp; HW</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="in_mau">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">MAU Scale vs Reasonable Band</h6>
+                                <div id="chart_in_mau"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_game">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Game Conversion Scale</h6>
+                                <div id="chart_in_game"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_course">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Course Conversion Scale</h6>
+                                <div id="chart_in_course"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_marketing">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Marketing Spend Scale</h6>
+                                <div id="chart_in_marketing"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_events">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Event Yield Scale</h6>
+                                <div id="chart_in_events"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_content">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Content Cost Scale</h6>
+                                <div id="chart_in_content"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_staff">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Staff Scale</h6>
+                                <div id="chart_in_staff"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="in_srv">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Services &amp; HW Scale</h6>
+                                <div id="chart_in_srv"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================== RESULTS TAB ================== -->
+                <div class="tab-pane fade" id="tab_results">
+
+                    <ul class="nav nav-pills mb-3 subtab-nav">
+                        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#res_pl">P&L</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_space">Space System</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_rev">Revenues by Segment</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_costs">Costs by Segment</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_mau">MAU</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_cac">CAC &amp; ROAS</a></li>
+                        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#res_staff">Staff &amp; Salaries</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <!-- P&L -->
+                        <div class="tab-pane fade show active" id="res_pl">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Revenues vs Costs</h6>
+                                <div id="chart_revcost"></div>
+                            </div>
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Profit</h6>
+                                <div id="chart_profit"></div>
+                            </div>
+                        </div>
+
+                        <!-- Space System / Profit ≥ 5M -->
+                        <div class="tab-pane fade" id="res_space">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Profit vs 5M€ Threshold (Space System Sustainability)</h6>
+                                <div id="chart_space_profit"></div>
+                            </div>
+                        </div>
+
+                        <!-- Revenues by Segment -->
+                        <div class="tab-pane fade" id="res_rev">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Revenue Breakdown</h6>
+                                <div id="chart_segments"></div>
+                            </div>
+                        </div>
+
+                        <!-- Costs by Segment -->
+                        <div class="tab-pane fade" id="res_costs">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Cost Breakdown</h6>
+                                <div id="chart_costs_seg"></div>
+                            </div>
+                        </div>
+
+                        <!-- MAU -->
+                        <div class="tab-pane fade" id="res_mau">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">MAU</h6>
+                                <div id="chart_mau"></div>
+                            </div>
+                        </div>
+
+                        <!-- CAC & ROAS -->
+                        <div class="tab-pane fade" id="res_cac">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">CAC</h6>
+                                <div id="chart_cac"></div>
+                            </div>
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">ROAS</h6>
+                                <div id="chart_roas"></div>
+                            </div>
+                        </div>
+
+                        <!-- Staff & Salaries -->
+                        <div class="tab-pane fade" id="res_staff">
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Staff Count</h6>
+                                <div id="chart_staff"></div>
+                            </div>
+                            <div class="card bg-space p-3 mb-3">
+                                <h6 class="neon-text">Salaries</h6>
+                                <div id="chart_salaries"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /tab-content -->
+        </div> <!-- /col-md-9 -->
+    </div> <!-- /row -->
+</div> <!-- /container-fluid -->
+
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/app.js"></script>
 </body>
 </html>
